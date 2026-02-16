@@ -1,0 +1,28 @@
+{
+  "landegebuehren": {
+    "titel": "Landegebühren",
+    "hinweis": "Bei Schulungen auf dem Sonderlandeplatz ermäßigt sich die Gebühr um 50%",
+    "positionen": [
+      { "typ": "Segelflugzeug", "preis": 4.00 },
+      { "typ": "Ultraleichtflugzeug", "preis": 4.00 },
+      { "typ": "Motorsegler", "preis": 4.00 },
+      { "typ": "Motorflugzeug (E-Klasse)", "preis": 8.00 },
+      { "typ": "LL (Leichtes Luftsportgerät)", "preis": 4.00 },
+      { "typ": "Hubschrauber", "preis": 10.00 },
+      { "typ": "Motorschirme", "preis": 4.00 }
+    ]
+  },
+  "parkgebuehren": {
+    "titel": "Parkgebühren (pro Nacht)",
+    "hinweis": "Ermäßigung nach 10 Tagen, ab dem 11. Tag - 50%!",
+    "positionen": [
+      { "typ": "Ultraleichtflugzeuge", "preis": 2.00 },
+      { "typ": "Motorflugzeug (E-Klasse)", "preis": 3.00 }
+    ]
+  },
+  "zahlung": {
+    "methoden": ["PayPal", "aeroPS"],
+    "paypal": "paypal@flugplatz-oberrissdorf.de",
+    "hinweis": "Bitte die Kennung angeben"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "stationiert": [
+    { "typ": "Motorsegler", "anzahl": 1 },
+    { "typ": "Tragschrauber (geschlossen)", "anzahl": 2 },
+    { "typ": "Tragschrauber (offen)", "anzahl": 1 },
+    { "typ": "Hubschrauber", "anzahl": 1 },
+    { "typ": "Motorschirme & Motorschirmtrikes", "anzahl": null, "bemerkung": "diverse" }
+  ],
+  "aktivitaeten": [
+    "Ausbildung und Prüfung im gesamten Ultraleichtbereich (Flugzeuge & Tragschrauber)",
+    "Gleitschirm- und Motorschirmsport",
+    "Ballonfahrt",
+    "Gästeflüge und Rundflüge (Gutscheine erhältlich)"
+  ]
+}

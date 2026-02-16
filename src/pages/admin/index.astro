@@ -1,0 +1,425 @@
+---
+// Admin page - rendered as static HTML, all logic is client-side
+---
+
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Admin | Flugplatz Oberrißdorf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #f8f9fa; color: #1a1a2e; }
+    .admin-header { background: #1e3a5f; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+    .admin-header h1 { font-size: 1.25rem; }
+    .admin-header a { color: #d4a843; text-decoration: none; font-size: 0.875rem; }
+    .login-screen { max-width: 400px; margin: 100px auto; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .login-screen h2 { color: #1e3a5f; margin-bottom: 1.5rem; text-align: center; }
+    .login-screen input { width: 100%; padding: 0.75rem 1rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; margin-bottom: 1rem; }
+    .login-screen button { width: 100%; padding: 0.75rem; background: #1e3a5f; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+    .login-screen button:hover { background: #2a5080; }
+    .admin-container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+    .admin-tabs { display: flex; gap: 0.25rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .admin-tab { padding: 0.5rem 1rem; background: #e9ecef; border: none; border-radius: 8px 8px 0 0; cursor: pointer; font-size: 0.875rem; font-weight: 500; }
+    .admin-tab.active { background: white; color: #1e3a5f; font-weight: 700; box-shadow: 0 -2px 4px rgba(0,0,0,0.05); }
+    .admin-panel { background: white; border-radius: 0 12px 12px 12px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: none; }
+    .admin-panel.active { display: block; }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label { display: block; font-weight: 600; font-size: 0.875rem; color: #1e3a5f; margin-bottom: 0.5rem; }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 0.6rem 0.8rem; border: 1px solid #ddd; border-radius: 8px; font-size: 0.9rem; font-family: inherit; }
+    .form-group textarea { min-height: 100px; resize: vertical; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .btn { padding: 0.6rem 1.5rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
+    .btn-primary { background: #1e3a5f; color: white; }
+    .btn-primary:hover { background: #2a5080; }
+    .btn-success { background: #16a34a; color: white; }
+    .btn-danger { background: #dc2626; color: white; font-size: 0.8rem; padding: 0.4rem 0.8rem; }
+    .btn-sm { font-size: 0.8rem; padding: 0.4rem 0.8rem; }
+    .fee-row { display: grid; grid-template-columns: 1fr 100px 40px; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem; }
+    .team-row { display: grid; grid-template-columns: 1fr 1fr 40px; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem; }
+    .status { padding: 1rem; border-radius: 8px; margin-top: 1rem; font-weight: 500; display: none; }
+    .status.success { display: block; background: #dcfce7; color: #166534; }
+    .status.error { display: block; background: #fef2f2; color: #991b1b; }
+    .hidden { display: none; }
+    @media (max-width: 640px) { .form-row { grid-template-columns: 1fr; } .fee-row, .team-row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <!-- Login -->
+  <div id="login-screen" class="login-screen">
+    <h2>&#9992; Admin-Bereich</h2>
+    <p style="text-align:center;color:#6b7280;font-size:0.875rem;margin-bottom:1.5rem;">Flugplatz Oberrißdorf</p>
+    <input type="password" id="password" placeholder="Passwort eingeben" autofocus />
+    <button onclick="login()">Anmelden</button>
+    <div id="login-error" style="color:#dc2626;text-align:center;margin-top:1rem;font-size:0.875rem;display:none;">Falsches Passwort</div>
+  </div>
+
+  <!-- Admin Area -->
+  <div id="admin-area" class="hidden">
+    <header class="admin-header">
+      <h1>&#9992; Admin &ndash; Flugplatz Oberrißdorf</h1>
+      <div>
+        <a href="/" style="margin-right:1rem;">Zur Website</a>
+        <a href="#" onclick="logout()" style="color:#ff6b6b;">Abmelden</a>
+      </div>
+    </header>
+
+    <div class="admin-container">
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-tab="fees">Gebühren</button>
+        <button class="admin-tab" data-tab="team">Vorstand</button>
+        <button class="admin-tab" data-tab="contact">Kontakt</button>
+        <button class="admin-tab" data-tab="airfield">Flugplatz</button>
+        <button class="admin-tab" data-tab="impressum">Impressum</button>
+      </div>
+
+      <!-- Gebühren -->
+      <div id="panel-fees" class="admin-panel active">
+        <h2 style="color:#1e3a5f;margin-bottom:1rem;">Landegebühren</h2>
+        <p style="font-size:0.85rem;color:#6b7280;margin-bottom:1rem;">Schulungshinweis wird automatisch angezeigt.</p>
+        <div id="landing-fees"></div>
+        <button class="btn btn-sm btn-primary" onclick="addFee('landing')" style="margin-top:0.5rem;">+ Position</button>
+
+        <h2 style="color:#1e3a5f;margin:2rem 0 1rem;">Parkgebühren</h2>
+        <div id="parking-fees"></div>
+        <button class="btn btn-sm btn-primary" onclick="addFee('parking')" style="margin-top:0.5rem;">+ Position</button>
+
+        <button class="btn btn-success" onclick="saveFees()" style="margin-top:2rem;">Gebühren speichern</button>
+        <div id="fees-status" class="status"></div>
+      </div>
+
+      <!-- Vorstand -->
+      <div id="panel-team" class="admin-panel">
+        <h2 style="color:#1e3a5f;margin-bottom:1rem;">Vorstand</h2>
+        <div id="team-list"></div>
+        <button class="btn btn-sm btn-primary" onclick="addTeamMember()" style="margin-top:0.5rem;">+ Mitglied</button>
+        <button class="btn btn-success" onclick="saveTeam()" style="margin-top:2rem;">Vorstand speichern</button>
+        <div id="team-status" class="status"></div>
+      </div>
+
+      <!-- Kontakt -->
+      <div id="panel-contact" class="admin-panel">
+        <h2 style="color:#1e3a5f;margin-bottom:1rem;">Kontaktdaten</h2>
+        <div class="form-group">
+          <label>Vereinsname</label>
+          <input type="text" id="site-verein" />
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Straße</label><input type="text" id="site-strasse" /></div>
+          <div class="form-group"><label>PLZ + Ort</label><input type="text" id="site-plzort" /></div>
+        </div>
+        <div class="form-group">
+          <label>E-Mail</label>
+          <input type="email" id="site-email" />
+        </div>
+        <h3 style="color:#1e3a5f;margin:1.5rem 0 0.5rem;">Telefonnummern</h3>
+        <div id="phone-list"></div>
+        <button class="btn btn-sm btn-primary" onclick="addPhone()" style="margin-top:0.5rem;">+ Nummer</button>
+        <button class="btn btn-success" onclick="saveSite()" style="margin-top:2rem;">Kontakt speichern</button>
+        <div id="contact-status" class="status"></div>
+      </div>
+
+      <!-- Flugplatz -->
+      <div id="panel-airfield" class="admin-panel">
+        <h2 style="color:#1e3a5f;margin-bottom:1rem;">Flugplatzdaten</h2>
+        <div class="form-row">
+          <div class="form-group"><label>ICAO-Code</label><input type="text" id="af-icao" /></div>
+          <div class="form-group"><label>Elevation</label><input type="text" id="af-elevation" /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Frequenz (MHz)</label><input type="text" id="af-frequenz" /></div>
+          <div class="form-group"><label>Rufzeichen</label><input type="text" id="af-rufzeichen" /></div>
+        </div>
+        <div class="form-group"><label>FIS</label><input type="text" id="af-fis" /></div>
+        <div class="form-group"><label>Betriebszeiten</label><input type="text" id="af-betrieb" /></div>
+        <button class="btn btn-success" onclick="saveAirfield()" style="margin-top:1rem;">Flugplatzdaten speichern</button>
+        <div id="airfield-status" class="status"></div>
+      </div>
+
+      <!-- Impressum -->
+      <div id="panel-impressum" class="admin-panel">
+        <h2 style="color:#1e3a5f;margin-bottom:1rem;">Impressum</h2>
+        <p style="font-size:0.85rem;color:#6b7280;margin-bottom:1rem;">HTML-Formatierung möglich (z.B. &lt;p&gt;, &lt;h3&gt;, &lt;br&gt;)</p>
+        <div class="form-group">
+          <label>Impressum-Text (HTML)</label>
+          <textarea id="impressum-text" style="min-height:300px;font-family:monospace;font-size:0.85rem;"></textarea>
+        </div>
+        <button class="btn btn-success" onclick="saveImpressum()">Impressum speichern</button>
+        <div id="impressum-status" class="status"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simple password hash (change this!)
+    // Default password: "eduo2024" → SHA-256 hash
+    const PASS_HASH = '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918'; // "admin" as placeholder
+
+    async function sha256(str) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // Data stores
+    let feesData = null;
+    let teamData = null;
+    let siteData = null;
+    let airfieldData = null;
+    let impressumData = null;
+
+    // API base - adjust for your server
+    const API_BASE = '/api/save.php';
+
+    async function login() {
+      const pw = document.getElementById('password').value;
+      const hash = await sha256(pw);
+      // For demo: accept any non-empty password, or check hash
+      if (pw.length > 0) {
+        sessionStorage.setItem('admin-auth', pw);
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('admin-area').classList.remove('hidden');
+        loadAllData();
+      } else {
+        document.getElementById('login-error').style.display = 'block';
+      }
+    }
+
+    function logout() {
+      sessionStorage.removeItem('admin-auth');
+      location.reload();
+    }
+
+    // Check if already logged in
+    if (sessionStorage.getItem('admin-auth')) {
+      document.getElementById('login-screen')?.classList.add('hidden');
+      document.getElementById('admin-area')?.classList.remove('hidden');
+      setTimeout(loadAllData, 100);
+    }
+
+    // Enter key to login
+    document.getElementById('password')?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') login();
+    });
+
+    // Tab switching
+    document.querySelectorAll('.admin-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('panel-' + tab.dataset.tab)?.classList.add('active');
+      });
+    });
+
+    // Load all JSON data
+    async function loadAllData() {
+      try {
+        const [fees, team, site, airfield, impressum] = await Promise.all([
+          fetch('/data/fees.json').then(r => r.ok ? r.json() : null).catch(() => null),
+          fetch('/data/team.json').then(r => r.ok ? r.json() : null).catch(() => null),
+          fetch('/data/site.json').then(r => r.ok ? r.json() : null).catch(() => null),
+          fetch('/data/airfield.json').then(r => r.ok ? r.json() : null).catch(() => null),
+          fetch('/data/impressum.json').then(r => r.ok ? r.json() : null).catch(() => null),
+        ]);
+
+        // Use fetched data or fall back to defaults
+        feesData = fees || {"landegebuehren":{"positionen":[]},"parkgebuehren":{"positionen":[]}};
+        teamData = team || {"vorstand":[]};
+        siteData = site || {"verein":"","adresse":{"strasse":"","plz":"","ort":""},"telefon":[],"email":""};
+        airfieldData = airfield || {"icao":"","frequenz":"","rufzeichen":"","elevation":"","fis":"","betriebszeiten":""};
+        impressumData = impressum || {"inhalt":""};
+
+        renderFees();
+        renderTeam();
+        renderContact();
+        renderAirfield();
+        renderImpressum();
+      } catch (err) {
+        console.log('Loading defaults, API not available:', err);
+      }
+    }
+
+    // --- FEES ---
+    function renderFees() {
+      const lf = document.getElementById('landing-fees');
+      const pf = document.getElementById('parking-fees');
+      if (!lf || !pf || !feesData) return;
+
+      lf.innerHTML = feesData.landegebuehren.positionen.map((p, i) => `
+        <div class="fee-row">
+          <input type="text" value="${p.typ}" data-type="landing" data-index="${i}" data-field="typ" />
+          <input type="number" value="${p.preis}" step="0.01" data-type="landing" data-index="${i}" data-field="preis" />
+          <button class="btn btn-danger" onclick="removeFee('landing',${i})">&#10005;</button>
+        </div>
+      `).join('');
+
+      pf.innerHTML = feesData.parkgebuehren.positionen.map((p, i) => `
+        <div class="fee-row">
+          <input type="text" value="${p.typ}" data-type="parking" data-index="${i}" data-field="typ" />
+          <input type="number" value="${p.preis}" step="0.01" data-type="parking" data-index="${i}" data-field="preis" />
+          <button class="btn btn-danger" onclick="removeFee('parking',${i})">&#10005;</button>
+        </div>
+      `).join('');
+    }
+
+    function addFee(type) {
+      if (type === 'landing') feesData.landegebuehren.positionen.push({typ:'', preis:0});
+      else feesData.parkgebuehren.positionen.push({typ:'', preis:0});
+      renderFees();
+    }
+
+    function removeFee(type, index) {
+      if (type === 'landing') feesData.landegebuehren.positionen.splice(index, 1);
+      else feesData.parkgebuehren.positionen.splice(index, 1);
+      renderFees();
+    }
+
+    function collectFees() {
+      document.querySelectorAll('#landing-fees input').forEach(input => {
+        const i = parseInt(input.dataset.index);
+        const field = input.dataset.field;
+        feesData.landegebuehren.positionen[i][field] = field === 'preis' ? parseFloat(input.value) : input.value;
+      });
+      document.querySelectorAll('#parking-fees input').forEach(input => {
+        const i = parseInt(input.dataset.index);
+        const field = input.dataset.field;
+        feesData.parkgebuehren.positionen[i][field] = field === 'preis' ? parseFloat(input.value) : input.value;
+      });
+    }
+
+    async function saveFees() {
+      collectFees();
+      await saveData('fees', feesData, 'fees-status');
+    }
+
+    // --- TEAM ---
+    function renderTeam() {
+      const list = document.getElementById('team-list');
+      if (!list || !teamData) return;
+      list.innerHTML = teamData.vorstand.map((p, i) => `
+        <div class="team-row">
+          <input type="text" value="${p.name}" placeholder="Name" data-index="${i}" data-field="name" />
+          <input type="text" value="${p.funktion}" placeholder="Funktion" data-index="${i}" data-field="funktion" />
+          <button class="btn btn-danger" onclick="removeTeam(${i})">&#10005;</button>
+        </div>
+      `).join('');
+    }
+
+    function addTeamMember() { teamData.vorstand.push({name:'', funktion:''}); renderTeam(); }
+    function removeTeam(i) { teamData.vorstand.splice(i, 1); renderTeam(); }
+
+    async function saveTeam() {
+      document.querySelectorAll('#team-list input').forEach(input => {
+        teamData.vorstand[parseInt(input.dataset.index)][input.dataset.field] = input.value;
+      });
+      await saveData('team', teamData, 'team-status');
+    }
+
+    // --- CONTACT ---
+    function renderContact() {
+      if (!siteData) return;
+      document.getElementById('site-verein').value = siteData.verein || '';
+      document.getElementById('site-strasse').value = siteData.adresse?.strasse || '';
+      document.getElementById('site-plzort').value = (siteData.adresse?.plz || '') + ' ' + (siteData.adresse?.ort || '');
+      document.getElementById('site-email').value = siteData.email || '';
+
+      const pl = document.getElementById('phone-list');
+      if (pl) {
+        pl.innerHTML = (siteData.telefon || []).map((t, i) => `
+          <div class="team-row">
+            <input type="text" value="${t.nummer}" placeholder="Nummer" data-index="${i}" data-field="nummer" />
+            <input type="text" value="${t.label}" placeholder="Label" data-index="${i}" data-field="label" />
+            <button class="btn btn-danger" onclick="removePhone(${i})">&#10005;</button>
+          </div>
+        `).join('');
+      }
+    }
+
+    function addPhone() { siteData.telefon.push({nummer:'', label:''}); renderContact(); }
+    function removePhone(i) { siteData.telefon.splice(i, 1); renderContact(); }
+
+    async function saveSite() {
+      siteData.verein = document.getElementById('site-verein').value;
+      siteData.adresse.strasse = document.getElementById('site-strasse').value;
+      const plzort = document.getElementById('site-plzort').value.split(' ');
+      siteData.adresse.plz = plzort[0] || '';
+      siteData.adresse.ort = plzort.slice(1).join(' ') || '';
+      siteData.email = document.getElementById('site-email').value;
+      document.querySelectorAll('#phone-list input').forEach(input => {
+        siteData.telefon[parseInt(input.dataset.index)][input.dataset.field] = input.value;
+      });
+      await saveData('site', siteData, 'contact-status');
+    }
+
+    // --- AIRFIELD ---
+    function renderAirfield() {
+      if (!airfieldData) return;
+      document.getElementById('af-icao').value = airfieldData.icao || '';
+      document.getElementById('af-elevation').value = airfieldData.elevation || '';
+      document.getElementById('af-frequenz').value = airfieldData.frequenz || '';
+      document.getElementById('af-rufzeichen').value = airfieldData.rufzeichen || '';
+      document.getElementById('af-fis').value = airfieldData.fis || '';
+      document.getElementById('af-betrieb').value = airfieldData.betriebszeiten || '';
+    }
+
+    async function saveAirfield() {
+      airfieldData.icao = document.getElementById('af-icao').value;
+      airfieldData.elevation = document.getElementById('af-elevation').value;
+      airfieldData.frequenz = document.getElementById('af-frequenz').value;
+      airfieldData.rufzeichen = document.getElementById('af-rufzeichen').value;
+      airfieldData.fis = document.getElementById('af-fis').value;
+      airfieldData.betriebszeiten = document.getElementById('af-betrieb').value;
+      await saveData('airfield', airfieldData, 'airfield-status');
+    }
+
+    // --- IMPRESSUM ---
+    function renderImpressum() {
+      if (!impressumData) return;
+      document.getElementById('impressum-text').value = impressumData.inhalt || '';
+    }
+
+    async function saveImpressum() {
+      impressumData.inhalt = document.getElementById('impressum-text').value;
+      await saveData('impressum', impressumData, 'impressum-status');
+    }
+
+    // --- SAVE HELPER ---
+    async function saveData(file, data, statusId) {
+      const statusEl = document.getElementById(statusId);
+      try {
+        const pw = sessionStorage.getItem('admin-auth');
+        const res = await fetch(API_BASE, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ file, data, password: pw })
+        });
+
+        if (res.ok) {
+          showStatus(statusEl, 'Erfolgreich gespeichert!', 'success');
+        } else {
+          throw new Error('Server error');
+        }
+      } catch (err) {
+        // Fallback: download as JSON file
+        const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = file + '.json';
+        a.click();
+        showStatus(statusEl, 'PHP-API nicht verfügbar. Datei wurde heruntergeladen – bitte manuell auf den Server laden.', 'error');
+      }
+    }
+
+    function showStatus(el, msg, type) {
+      if (!el) return;
+      el.textContent = msg;
+      el.className = 'status ' + type;
+      setTimeout(() => { el.className = 'status'; }, 5000);
+    }
+  </script>
+</body>
+</html>

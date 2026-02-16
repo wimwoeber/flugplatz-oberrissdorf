@@ -1,0 +1,8 @@
+{
+  "vorstand": [
+    { "name": "Willi Horka", "funktion": "Vorsitzender" },
+    { "name": "Andy Hirt", "funktion": "Stellvertreter" },
+    { "name": "Eduard Schneider", "funktion": "Kassenwart" },
+    { "name": "Gerhard Kroßner", "funktion": "Flugplatz & Technik" }
+  ]
+}

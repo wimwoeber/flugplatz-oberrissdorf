@@ -1,0 +1,56 @@
+---
+import site from '../content/site.json';
+---
+
+<footer class="bg-primary-dark text-white/80 mt-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Verein -->
+      <div>
+        <h3 class="text-white font-bold text-lg mb-4">{site.verein}</h3>
+        <p class="text-sm leading-relaxed">
+          {site.adresse.strasse}<br />
+          {site.adresse.plz} {site.adresse.ort}
+        </p>
+      </div>
+
+      <!-- Kontakt -->
+      <div>
+        <h3 class="text-white font-bold text-lg mb-4">Kontakt</h3>
+        <ul class="text-sm space-y-2">
+          {site.telefon.slice(0, 2).map(t => (
+            <li>
+              <a href={`tel:${t.nummer.replace(/\s/g, '')}`} class="hover:text-accent transition-colors">
+                {t.nummer}
+              </a>
+              <span class="text-white/50 ml-1">({t.label})</span>
+            </li>
+          ))}
+          <li>
+            <a href={`mailto:${site.email}`} class="hover:text-accent transition-colors">
+              {site.email}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Links -->
+      <div>
+        <h3 class="text-white font-bold text-lg mb-4">Links</h3>
+        <ul class="text-sm space-y-2">
+          <li><a href="/impressum" class="hover:text-accent transition-colors">Impressum</a></li>
+          <li><a href="/datenschutz" class="hover:text-accent transition-colors">Datenschutz</a></li>
+          <li>
+            <a href="https://holfuy.com/de/weather/1939" target="_blank" rel="noopener" class="hover:text-accent transition-colors">
+              Wetterstation (Holfuy)
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-white/10 mt-8 pt-8 text-center text-sm text-white/50">
+      <p>&copy; {new Date().getFullYear()} {site.verein}. Alle Rechte vorbehalten.</p>
+    </div>
+  </div>
+</footer>

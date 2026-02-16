@@ -1,0 +1,121 @@
+---
+import Layout from '../layouts/Layout.astro';
+import site from '../content/site.json';
+import airfield from '../content/airfield.json';
+---
+
+<Layout title="Kontakt" description="Kontaktdaten und Anfahrt zum Flugplatz Oberrißdorf EDUO">
+  <section class="bg-primary text-white py-16 sm:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold">Kontakt</h1>
+      <p class="text-white/70 mt-3 text-lg">Wir freuen uns auf Ihre Nachricht</p>
+    </div>
+  </section>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <!-- Kontaktdaten -->
+      <div>
+        <h2 class="text-2xl font-bold text-primary mb-6">Kontaktdaten</h2>
+
+        <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+          <h3 class="font-bold text-lg mb-4">{site.verein}</h3>
+          <div class="space-y-4">
+            <div class="flex items-start gap-3">
+              <span class="text-accent text-xl mt-0.5">&#128205;</span>
+              <div>
+                <div class="font-medium">Adresse</div>
+                <div class="text-text-light">{site.adresse.strasse}<br />{site.adresse.plz} {site.adresse.ort}</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-accent text-xl mt-0.5">&#9993;</span>
+              <div>
+                <div class="font-medium">E-Mail</div>
+                <a href={`mailto:${site.email}`} class="text-primary hover:text-accent transition-colors">{site.email}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+          <h3 class="font-bold text-lg mb-4">Telefon / Luftaufsicht (PPR)</h3>
+          <div class="space-y-3">
+            {site.telefon.map(t => (
+              <div class="flex items-center gap-3">
+                <span class="text-accent">&#128222;</span>
+                <a href={`tel:${t.nummer.replace(/\s/g, '')}`} class="text-primary hover:text-accent transition-colors font-medium">
+                  {t.nummer}
+                </a>
+                <span class="text-sm text-text-light">({t.label})</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="bg-amber-50 border-l-4 border-accent rounded-r-xl p-6">
+          <h3 class="font-bold text-lg mb-2">Hinweis: PPR</h3>
+          <p class="text-sm text-text leading-relaxed">
+            Der Flugplatz Oberrißdorf ist PPR (Prior Permission Required).
+            Bitte rufen Sie vor dem Anflug die Luftaufsicht an, um eine Landeerlaubnis einzuholen.
+          </p>
+        </div>
+      </div>
+
+      <!-- Karte + Formular -->
+      <div>
+        <h2 class="text-2xl font-bold text-primary mb-6">Lage</h2>
+        <div class="bg-white rounded-xl shadow-md overflow-hidden mb-6">
+          <iframe
+            src={`https://www.openstreetmap.org/export/embed.html?bbox=${airfield.koordinaten.lng - 0.02}%2C${airfield.koordinaten.lat - 0.01}%2C${airfield.koordinaten.lng + 0.02}%2C${airfield.koordinaten.lat + 0.01}&layer=mapnik&marker=${airfield.koordinaten.lat}%2C${airfield.koordinaten.lng}`}
+            width="100%"
+            height="350"
+            frameborder="0"
+            loading="lazy"
+            title="Karte Flugplatz Oberrißdorf"
+            class="w-full"
+          ></iframe>
+          <div class="p-4 text-sm text-text-light text-center">
+            <a href={`https://www.openstreetmap.org/?mlat=${airfield.koordinaten.lat}&mlon=${airfield.koordinaten.lng}#map=14/${airfield.koordinaten.lat}/${airfield.koordinaten.lng}`}
+               target="_blank" rel="noopener" class="text-primary hover:text-accent underline">
+              Größere Karte anzeigen
+            </a>
+          </div>
+        </div>
+
+        <!-- Kontaktformular -->
+        <h2 class="text-2xl font-bold text-primary mb-6">Nachricht senden</h2>
+        <form action={`mailto:${site.email}`} method="post" enctype="text/plain" class="bg-white rounded-xl shadow-md p-6 space-y-4">
+          <div>
+            <label for="name" class="block text-sm font-medium mb-1">Name</label>
+            <input type="text" id="name" name="Name" required class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent outline-none" />
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-medium mb-1">E-Mail</label>
+            <input type="email" id="email" name="E-Mail" required class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent outline-none" />
+          </div>
+          <div>
+            <label for="betreff" class="block text-sm font-medium mb-1">Betreff</label>
+            <select id="betreff" name="Betreff" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent outline-none">
+              <option>Allgemeine Anfrage</option>
+              <option>Rundflug / Gutschein</option>
+              <option>Ausbildung</option>
+              <option>Gastlandung / PPR</option>
+              <option>Mitgliedschaft</option>
+            </select>
+          </div>
+          <div>
+            <label for="nachricht" class="block text-sm font-medium mb-1">Nachricht</label>
+            <textarea id="nachricht" name="Nachricht" rows="5" required class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent outline-none resize-y"></textarea>
+          </div>
+          <button type="submit" class="w-full bg-primary text-white font-semibold py-3 rounded-lg hover:bg-primary-light transition-colors">
+            Nachricht senden
+          </button>
+          <p class="text-xs text-text-light text-center">
+            Ihr E-Mail-Programm wird geöffnet, um die Nachricht zu versenden.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</Layout>

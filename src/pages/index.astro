@@ -1,0 +1,112 @@
+---
+import Layout from '../layouts/Layout.astro';
+import site from '../content/site.json';
+import airfield from '../content/airfield.json';
+---
+
+<Layout title="Willkommen">
+  <!-- Hero -->
+  <section class="relative bg-primary min-h-[70vh] flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-primary-dark/80 via-primary/60 to-primary-dark/90"></div>
+    <div class="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
+      <p class="text-accent font-medium tracking-[0.3em] uppercase text-sm mb-4">Sonderlandeplatz</p>
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 leading-tight">
+        Flugplatz<br />Oberrißdorf
+      </h1>
+      <p class="text-2xl sm:text-3xl font-light text-accent tracking-wider mb-8">EDUO</p>
+      <p class="text-lg text-white/80 mb-10 max-w-2xl mx-auto">
+        Willkommen im Mansfelder Land. Erleben Sie die Faszination des Fliegens &ndash;
+        ob Rundflug, Ausbildung oder Gastlandung.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/kontakt" class="bg-accent text-primary-dark font-semibold px-8 py-3 rounded-lg hover:bg-accent-light transition-colors">
+          Kontakt aufnehmen
+        </a>
+        <a href="/flugplatz" class="border-2 border-white/30 text-white font-semibold px-8 py-3 rounded-lg hover:bg-white/10 transition-colors">
+          Flugplatz-Info
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Info Cards -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-20">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow">
+        <div class="text-3xl mb-2">&#128225;</div>
+        <div class="text-sm text-text-light uppercase tracking-wider mb-1">Frequenz</div>
+        <div class="text-xl font-bold text-primary">{airfield.frequenz}</div>
+        <div class="text-sm text-text-light">{airfield.rufzeichen}</div>
+      </div>
+      <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow">
+        <div class="text-3xl mb-2">&#9650;</div>
+        <div class="text-sm text-text-light uppercase tracking-wider mb-1">Elevation</div>
+        <div class="text-xl font-bold text-primary">{airfield.elevation}</div>
+        <div class="text-sm text-text-light">über MSL</div>
+      </div>
+      <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow">
+        <div class="text-3xl mb-2">&#128222;</div>
+        <div class="text-sm text-text-light uppercase tracking-wider mb-1">PPR / Luftaufsicht</div>
+        <a href={`tel:${site.telefon[1].nummer.replace(/\s/g, '')}`} class="text-xl font-bold text-primary hover:text-accent transition-colors">
+          {site.telefon[1].nummer}
+        </a>
+        <div class="text-sm text-text-light">Vorab anrufen</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wetter Widget -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+    <h2 class="text-2xl sm:text-3xl font-bold text-primary text-center mb-8">Aktuelles Wetter am Platz</h2>
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+      <iframe
+        src="https://widget.holfuy.com/?station=1939&su=km/h&t=C&lang=de&mode=average"
+        width="100%"
+        height="340"
+        frameborder="0"
+        loading="lazy"
+        title="Wetterstation EDUO"
+        class="w-full"
+      ></iframe>
+    </div>
+    <p class="text-center text-sm text-text-light mt-3">
+      Daten von der Holfuy-Wetterstation auf dem Hauptgebäude &middot;
+      <a href="https://holfuy.com/de/weather/1939" target="_blank" rel="noopener" class="text-primary hover:text-accent transition-colors underline">
+        Ausführliche Wetterdaten
+      </a>
+    </p>
+  </section>
+
+  <!-- Über uns Teaser -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+    <div class="bg-primary rounded-2xl p-8 sm:p-12 text-white">
+      <div class="max-w-3xl">
+        <h2 class="text-2xl sm:text-3xl font-bold mb-4">{site.verein}</h2>
+        <p class="text-white/80 text-lg leading-relaxed mb-6">
+          Seit 1998 betreiben wir den einzigen im Mansfelder Land zugelassenen Flugplatz.
+          Von Ultraleicht bis Hubschrauber, von Motorschirm bis Tragschrauber &ndash;
+          bei uns finden Sie maximale fliegerische Freiheit. Mit erfahrenen Fluglehrern
+          und Prüfern bieten wir Ausbildung, Rundflüge und Gästeflüge an.
+        </p>
+        <a href="/verein" class="inline-block bg-accent text-primary-dark font-semibold px-6 py-3 rounded-lg hover:bg-accent-light transition-colors">
+          Mehr über uns
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rundflüge CTA -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 mb-8">
+    <div class="text-center">
+      <h2 class="text-2xl sm:text-3xl font-bold text-primary mb-4">Rundflüge & Gutscheine</h2>
+      <p class="text-text-light text-lg max-w-2xl mx-auto mb-8">
+        Erleben Sie das Mansfelder Land aus der Vogelperspektive!
+        Ob Tragschrauber, Ultraleicht oder Motorschirm &ndash;
+        wir bieten unvergessliche Flugerlebnisse.
+      </p>
+      <a href="/kontakt" class="inline-block bg-primary text-white font-semibold px-8 py-3 rounded-lg hover:bg-primary-light transition-colors">
+        Jetzt anfragen
+      </a>
+    </div>
+  </section>
+</Layout>

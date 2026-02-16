@@ -1,0 +1,125 @@
+---
+import Layout from '../layouts/Layout.astro';
+import team from '../content/team.json';
+import aircraft from '../content/aircraft.json';
+---
+
+<Layout title="Verein" description="Der Luftfahrtverein Mansfelder Land e.V. - Geschichte, Vorstand und Aktivitäten">
+  <section class="bg-primary text-white py-16 sm:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold">Unser Verein</h1>
+      <p class="text-white/70 mt-3 text-lg">Luftfahrtverein Mansfelder Land e.V.</p>
+    </div>
+  </section>
+
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Geschichte -->
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold text-primary mb-6">Unsere Geschichte</h2>
+      <div class="prose max-w-none space-y-4 text-text leading-relaxed">
+        <p>
+          Der Luftfahrtverein Mansfelder Land e.V. wurde am <strong>16. April 1998</strong> gegründet
+          und ist beim Amtsgericht Stendal unter der Nummer <strong>VR 43382</strong> registriert.
+        </p>
+        <p>
+          Ein Hauptanliegen war die Zulassung des ehemaligen Agrarflugplatzes Oberrißdorf als
+          Sonderlandeplatz. Nach umfangreicher Antragstellung und Herstellung des geforderten Zustandes
+          in Eigenleistung der Mitglieder erhielt der Flugplatz am <strong>1. Dezember 1999</strong>
+          den offiziellen Status als Sonderlandeplatz.
+        </p>
+        <p>
+          Heute zählt der Verein <strong>17 aktive Mitglieder</strong> &ndash; Privatpersonen,
+          kommunale Einrichtungen, eingetragene Genossenschaften und andere Firmen. Der Verein
+          verwaltet den Flugplatz in eigener Zuständigkeit und mit eigenen Mitteln.
+        </p>
+        <p>
+          Alle Fluggeräte befinden sich im Privatbesitz &ndash; das ist die Philosophie des Vereins:
+          <strong>maximale fliegerische Freiheit</strong>. Unter den Piloten sind auch Fluglehrer
+          und Prüfer, so dass alle Fragen mit hoher Kompetenz beantwortet werden können.
+        </p>
+      </div>
+    </section>
+
+    <!-- Vorstand -->
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold text-primary mb-6">Vorstand</h2>
+      <div id="vorstand-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {team.vorstand.map(person => (
+          <div class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition-shadow">
+            <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-primary text-2xl font-bold">{person.name.charAt(0)}</span>
+            </div>
+            <h3 class="font-bold text-lg">{person.name}</h3>
+            <p class="text-accent text-sm font-medium mt-1">{person.funktion}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Fluggeräte -->
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold text-primary mb-6">Stationierte Fluggeräte</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {aircraft.stationiert.map(item => (
+          <div class="bg-white rounded-xl shadow-md p-6 flex items-center gap-4">
+            <div class="text-3xl">&#9992;</div>
+            <div>
+              <div class="font-semibold">{item.typ}</div>
+              <div class="text-sm text-text-light">
+                {item.anzahl ? `${item.anzahl}x` : item.bemerkung}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Aktivitäten -->
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold text-primary mb-6">Aktivitäten & Ausbildung</h2>
+      <div class="bg-white rounded-xl shadow-md p-6 sm:p-8">
+        <ul class="space-y-4">
+          {aircraft.aktivitaeten.map(item => (
+            <li class="flex items-start gap-3">
+              <span class="text-accent mt-0.5 text-lg">&#10003;</span>
+              <span class="text-lg">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="text-center bg-primary/5 rounded-2xl p-8 sm:p-12">
+      <h2 class="text-2xl font-bold text-primary mb-4">Interesse geweckt?</h2>
+      <p class="text-text-light text-lg mb-6 max-w-xl mx-auto">
+        Ob Schnupperflug, Ausbildung oder Mitgliedschaft &ndash; wir freuen uns auf Sie!
+      </p>
+      <a href="/kontakt" class="inline-block bg-primary text-white font-semibold px-8 py-3 rounded-lg hover:bg-primary-light transition-colors">
+        Kontakt aufnehmen
+      </a>
+    </section>
+  </div>
+
+  <script>
+    (async () => {
+      try {
+        const res = await fetch('/data/team.json');
+        if (!res.ok) return;
+        const team = await res.json();
+        const grid = document.getElementById('vorstand-grid');
+        if (grid && team.vorstand) {
+          grid.innerHTML = team.vorstand.map(p =>
+            `<div class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition-shadow">
+              <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="text-primary text-2xl font-bold">${p.name.charAt(0)}</span>
+              </div>
+              <h3 class="font-bold text-lg">${p.name}</h3>
+              <p class="text-accent text-sm font-medium mt-1">${p.funktion}</p>
+            </div>`
+          ).join('');
+        }
+      } catch (e) {}
+    })();
+  </script>
+</Layout>

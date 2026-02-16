@@ -1,0 +1,88 @@
+---
+import Layout from '../layouts/Layout.astro';
+import airfield from '../content/airfield.json';
+---
+
+<Layout title="Flugplatz" description="Flugplatzdaten, Anflugkarte und Frequenzen des Sonderlandeplatzes Oberrißdorf EDUO">
+  <section class="bg-primary text-white py-16 sm:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-accent font-medium tracking-wider uppercase text-sm mb-2">{airfield.icao}</p>
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold">Flugplatz Oberrißdorf</h1>
+      <p class="text-white/70 mt-3 text-lg">{airfield.typ}</p>
+    </div>
+  </section>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <div>
+        <h2 class="text-2xl font-bold text-primary mb-6">Flugplatzdaten</h2>
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+          <table class="w-full">
+            <tbody class="divide-y divide-gray-100">
+              <tr class="hover:bg-gray-50"><td class="px-6 py-4 font-medium text-text-light text-sm">ICAO-Code</td><td class="px-6 py-4 font-bold text-primary">{airfield.icao}</td></tr>
+              <tr class="hover:bg-gray-50"><td class="px-6 py-4 font-medium text-text-light text-sm">Elevation</td><td class="px-6 py-4 font-semibold">{airfield.elevation}</td></tr>
+              <tr class="hover:bg-gray-50"><td class="px-6 py-4 font-medium text-text-light text-sm">Funkfrequenz</td><td class="px-6 py-4 font-semibold">{airfield.frequenz}<br /><span class="text-sm text-text-light">{airfield.rufzeichen}</span></td></tr>
+              <tr class="hover:bg-gray-50"><td class="px-6 py-4 font-medium text-text-light text-sm">FIS</td><td class="px-6 py-4">{airfield.fis}</td></tr>
+              <tr class="hover:bg-gray-50"><td class="px-6 py-4 font-medium text-text-light text-sm">Lage</td><td class="px-6 py-4">{airfield.lage}</td></tr>
+              <tr class="hover:bg-gray-50"><td class="px-6 py-4 font-medium text-text-light text-sm">Betriebszeiten</td><td class="px-6 py-4 font-semibold text-accent">{airfield.betriebszeiten}</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-primary mb-6">Zugelassene Fluggeräte</h2>
+        <div class="bg-white rounded-xl shadow-md p-6">
+          <ul class="space-y-3">
+            {airfield.zugelassen.map(item => (
+              <li class="flex items-start gap-3">
+                <span class="text-accent mt-0.5">&#10003;</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <h2 class="text-2xl font-bold text-primary mb-6 mt-8">Hinweise</h2>
+        <div class="bg-amber-50 border-l-4 border-accent rounded-r-xl p-6">
+          <ul class="space-y-3">
+            {airfield.hinweise.map(item => (
+              <li class="flex items-start gap-3">
+                <span class="text-accent font-bold mt-0.5">&#9888;</span>
+                <span class="text-sm">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Anflugkarte -->
+    <div class="mt-16">
+      <h2 class="text-2xl font-bold text-primary mb-6">Sichtflugkarte (Visual Operation Chart)</h2>
+      <div class="bg-white rounded-xl shadow-md p-4 sm:p-6">
+        <div class="relative cursor-pointer group" id="chart-container">
+          <img src="/images/anflugkarte.jpg" alt="Anflugkarte Flugplatz Oberrißdorf EDUO" class="w-full rounded-lg" loading="lazy" />
+          <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-lg flex items-center justify-center">
+            <span class="opacity-0 group-hover:opacity-100 transition-opacity text-white text-lg font-medium bg-black/50 px-4 py-2 rounded-lg">
+              Klicken zum Vergrößern
+            </span>
+          </div>
+        </div>
+        <p class="text-sm text-text-light mt-3 text-center">Quelle: DFS Deutsche Flugsicherung GmbH, Stand: September 2024</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="lightbox" class="fixed inset-0 z-50 bg-black/90 hidden items-center justify-center p-4 cursor-pointer">
+    <img src="/images/anflugkarte.jpg" alt="Anflugkarte" class="max-w-full max-h-full object-contain" />
+    <button class="absolute top-4 right-4 text-white text-4xl hover:text-accent">&times;</button>
+  </div>
+
+  <script>
+    const container = document.getElementById('chart-container');
+    const lightbox = document.getElementById('lightbox');
+    container?.addEventListener('click', () => lightbox?.classList.replace('hidden', 'flex'));
+    lightbox?.addEventListener('click', () => lightbox?.classList.replace('flex', 'hidden'));
+  </script>
+</Layout>

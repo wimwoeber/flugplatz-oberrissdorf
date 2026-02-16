@@ -1,0 +1,29 @@
+{
+  "icao": "EDUO",
+  "name": "Oberrißdorf",
+  "typ": "Sonderlandeplatz / Special Airfield",
+  "lage": "2 NM NE Lutherstadt Eisleben",
+  "elevation": "739 ft / 225 m",
+  "frequenz": "122.630 MHz",
+  "rufzeichen": "Oberrissdorf Radio",
+  "fis": "Langen Information 119.825",
+  "betriebszeiten": "PPR (Prior Permission Required)",
+  "zugelassen": [
+    "Motorflugzeuge bis 2000 kg MTOW",
+    "Hubschrauber",
+    "Segelflugzeuge",
+    "Motorsegler",
+    "Ultraleichtflugzeuge",
+    "Ballone",
+    "Motorschirme",
+    "Leichtes Luftsportgerät (LL)"
+  ],
+  "hinweise": [
+    "Transponder Mandatory Zone (TMZ) beachten",
+    "Überflüge des Naturschutzgebietes Hasenwinkel sind möglichst zu vermeiden"
+  ],
+  "koordinaten": {
+    "lat": 51.546,
+    "lng": 11.597
+  }
+}

@@ -1,0 +1,84 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Galerie" description="Bilder vom Flugplatz Oberrißdorf und unseren Fluggeräten">
+  <section class="bg-primary text-white py-16 sm:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold">Galerie</h1>
+      <p class="text-white/70 mt-3 text-lg">Impressionen von unserem Flugplatz</p>
+    </div>
+  </section>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div id="gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <p class="col-span-full text-center text-text-light py-12">
+        Bilder werden geladen... Falls keine Bilder erscheinen, werden diese im Admin-Bereich verwaltet.
+      </p>
+    </div>
+  </div>
+
+  <!-- Lightbox -->
+  <div id="gallery-lightbox" class="fixed inset-0 z-50 bg-black/90 hidden items-center justify-center p-4">
+    <button id="lb-prev" class="absolute left-4 text-white text-4xl hover:text-accent z-10 p-2">&#10094;</button>
+    <img id="lb-img" src="" alt="" class="max-w-full max-h-[90vh] object-contain" />
+    <button id="lb-next" class="absolute right-4 text-white text-4xl hover:text-accent z-10 p-2">&#10095;</button>
+    <button id="lb-close" class="absolute top-4 right-4 text-white text-4xl hover:text-accent p-2">&times;</button>
+  </div>
+
+  <script>
+    // Simple gallery that looks for images in /images/galerie/
+    // In production, this would be populated from a JSON file or PHP API
+    const galleryImages = [
+      // Placeholder - replace with actual image paths
+      { src: '/images/galerie/01.jpg', alt: 'Flugplatz Oberrißdorf' },
+      { src: '/images/galerie/02.jpg', alt: 'Flugplatz Oberrißdorf' },
+      { src: '/images/galerie/03.jpg', alt: 'Flugplatz Oberrißdorf' },
+    ];
+
+    const gallery = document.getElementById('gallery');
+    const lightbox = document.getElementById('gallery-lightbox');
+    const lbImg = document.getElementById('lb-img') as HTMLImageElement;
+    let currentIndex = 0;
+
+    if (gallery && galleryImages.length > 0) {
+      gallery.innerHTML = galleryImages.map((img, i) => `
+        <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-md cursor-pointer group" data-index="${i}">
+          <img src="${img.src}" alt="${img.alt}" loading="lazy"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            onerror="this.parentElement.style.display='none'" />
+        </div>
+      `).join('');
+
+      gallery.addEventListener('click', (e) => {
+        const target = (e.target as HTMLElement).closest('[data-index]');
+        if (!target) return;
+        currentIndex = parseInt(target.getAttribute('data-index') || '0');
+        showImage();
+        lightbox?.classList.replace('hidden', 'flex');
+      });
+    }
+
+    function showImage() {
+      if (lbImg && galleryImages[currentIndex]) {
+        lbImg.src = galleryImages[currentIndex].src;
+        lbImg.alt = galleryImages[currentIndex].alt;
+      }
+    }
+
+    document.getElementById('lb-close')?.addEventListener('click', () => lightbox?.classList.replace('flex', 'hidden'));
+    document.getElementById('lb-prev')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+      showImage();
+    });
+    document.getElementById('lb-next')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      currentIndex = (currentIndex + 1) % galleryImages.length;
+      showImage();
+    });
+    lightbox?.addEventListener('click', (e) => {
+      if (e.target === lightbox) lightbox.classList.replace('flex', 'hidden');
+    });
+  </script>
+</Layout>

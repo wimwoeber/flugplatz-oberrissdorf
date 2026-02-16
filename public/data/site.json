@@ -1,0 +1,20 @@
+{
+  "name": "Flugplatz Oberrißdorf",
+  "icao": "EDUO",
+  "tagline": "Sonderlandeplatz im Mansfelder Land",
+  "verein": "Luftfahrtverein Mansfelder Land e.V.",
+  "adresse": {
+    "strasse": "Stockbachstraße 2",
+    "plz": "06343",
+    "ort": "Mansfeld - Großörner"
+  },
+  "telefon": [
+    { "nummer": "+49 3476-9367010", "label": "Festnetz" },
+    { "nummer": "+49 177-3315370", "label": "PPR / Luftaufsicht" },
+    { "nummer": "+49 172-3427644", "label": "Luftaufsicht" },
+    { "nummer": "+49 171-6930346", "label": "Luftaufsicht" }
+  ],
+  "email": "info@flugplatz-oberrissdorf.de",
+  "paypal": "paypal@flugplatz-oberrissdorf.de",
+  "web": "https://flugplatz-oberrissdorf.de"
+}

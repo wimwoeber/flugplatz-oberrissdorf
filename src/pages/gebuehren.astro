@@ -1,0 +1,108 @@
+---
+import Layout from '../layouts/Layout.astro';
+import fees from '../content/fees.json';
+---
+
+<Layout title="Gebühren" description="Lande- und Parkgebühren am Flugplatz Oberrißdorf EDUO">
+  <section class="bg-primary text-white py-16 sm:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold">Gebühren</h1>
+      <p class="text-white/70 mt-3 text-lg">Lande- und Parkgebühren am Sonderlandeplatz</p>
+    </div>
+  </section>
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold text-primary mb-2">{fees.landegebuehren.titel}</h2>
+      <p class="text-accent font-medium mb-6">{fees.landegebuehren.hinweis}</p>
+      <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <table id="lande-tabelle" class="w-full">
+          <thead class="bg-primary text-white">
+            <tr>
+              <th class="px-6 py-4 text-left text-sm font-semibold">Fluggerät</th>
+              <th class="px-6 py-4 text-right text-sm font-semibold">Gebühr</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            {fees.landegebuehren.positionen.map(pos => (
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4">{pos.typ}</td>
+                <td class="px-6 py-4 text-right font-semibold text-primary">{pos.preis.toFixed(2).replace('.', ',')} &euro;</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold text-primary mb-2">{fees.parkgebuehren.titel}</h2>
+      <p class="text-accent font-medium mb-6">{fees.parkgebuehren.hinweis}</p>
+      <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <table id="park-tabelle" class="w-full">
+          <thead class="bg-primary text-white">
+            <tr>
+              <th class="px-6 py-4 text-left text-sm font-semibold">Fluggerät</th>
+              <th class="px-6 py-4 text-right text-sm font-semibold">pro Nacht</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            {fees.parkgebuehren.positionen.map(pos => (
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4">{pos.typ}</td>
+                <td class="px-6 py-4 text-right font-semibold text-primary">{pos.preis.toFixed(2).replace('.', ',')} &euro;</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="bg-primary/5 rounded-xl p-6 sm:p-8">
+      <h2 class="text-xl font-bold text-primary mb-4">Zahlungsmöglichkeiten</h2>
+      <div class="flex flex-col sm:flex-row gap-4 sm:gap-8">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">&#128179;</span>
+          <div>
+            <div class="font-semibold">PayPal</div>
+            <a href={`mailto:${fees.zahlung.paypal}`} class="text-sm text-primary hover:text-accent transition-colors">{fees.zahlung.paypal}</a>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">&#9992;</span>
+          <div>
+            <div class="font-semibold">aeroPS</div>
+            <span class="text-sm text-text-light">{fees.zahlung.hinweis}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Client-side Hydration: Aktualisiert Tabellen aus /data/fees.json falls vorhanden -->
+  <script>
+    (async () => {
+      try {
+        const res = await fetch('/data/fees.json');
+        if (!res.ok) return;
+        const fees = await res.json();
+
+        // Landegebühren aktualisieren
+        const landeTbody = document.querySelector('#lande-tabelle tbody');
+        if (landeTbody && fees.landegebuehren?.positionen) {
+          landeTbody.innerHTML = fees.landegebuehren.positionen.map(pos =>
+            `<tr class="hover:bg-gray-50"><td class="px-6 py-4">${pos.typ}</td><td class="px-6 py-4 text-right font-semibold text-primary">${pos.preis.toFixed(2).replace('.', ',')} &euro;</td></tr>`
+          ).join('');
+        }
+
+        // Parkgebühren aktualisieren
+        const parkTbody = document.querySelector('#park-tabelle tbody');
+        if (parkTbody && fees.parkgebuehren?.positionen) {
+          parkTbody.innerHTML = fees.parkgebuehren.positionen.map(pos =>
+            `<tr class="hover:bg-gray-50"><td class="px-6 py-4">${pos.typ}</td><td class="px-6 py-4 text-right font-semibold text-primary">${pos.preis.toFixed(2).replace('.', ',')} &euro;</td></tr>`
+          ).join('');
+        }
+      } catch (e) { /* Statische Build-Daten bleiben erhalten */ }
+    })();
+  </script>
+</Layout>
