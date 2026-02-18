@@ -60,33 +60,32 @@ import airfield from '../content/airfield.json';
 
   <!-- Wetter & Rundflüge -->
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:items-stretch">
       <!-- Wetter Widget -->
-      <div>
+      <div class="flex flex-col">
         <h2 class="text-2xl sm:text-3xl font-bold text-primary mb-6">Aktuelles Wetter am Platz</h2>
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden flex-1 flex flex-col">
           <iframe
             src="https://widget.holfuy.com/?station=1939&su=km/h&t=C&lang=de&mode=detailed"
             width="100%"
-            height="290"
             frameborder="0"
             loading="lazy"
             title="Wetterstation EDUO"
-            class="w-full"
+            class="w-full flex-1 min-h-[280px]"
           ></iframe>
+          <p class="text-sm text-text-light px-4 py-3 border-t border-gray-100">
+            Holfuy-Wetterstation auf dem Hauptgebäude &middot;
+            <a href="https://holfuy.com/de/weather/1939" target="_blank" rel="noopener" class="text-primary hover:text-accent transition-colors underline">
+              Ausführliche Wetterdaten
+            </a>
+          </p>
         </div>
-        <p class="text-sm text-text-light mt-3">
-          Daten von der Holfuy-Wetterstation auf dem Hauptgebäude &middot;
-          <a href="https://holfuy.com/de/weather/1939" target="_blank" rel="noopener" class="text-primary hover:text-accent transition-colors underline">
-            Ausführliche Wetterdaten
-          </a>
-        </p>
       </div>
 
       <!-- Rundflüge & Gutscheine -->
       <div class="flex flex-col">
         <h2 class="text-2xl sm:text-3xl font-bold text-primary mb-6">Rundflüge &amp; Gutscheine</h2>
-        <div class="bg-white rounded-xl shadow-lg p-8">
+        <div class="bg-white rounded-xl shadow-lg p-8 flex-1 flex flex-col justify-center">
           <ul class="space-y-4 mb-6">
             <li class="flex items-start gap-3">
               <span class="text-accent font-bold text-lg mt-0.5">&#10003;</span>
