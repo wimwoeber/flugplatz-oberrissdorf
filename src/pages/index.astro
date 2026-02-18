@@ -6,7 +6,7 @@ import airfield from '../content/airfield.json';
 
 <Layout title="Willkommen">
   <!-- Hero -->
-  <section class="relative bg-primary min-h-[70vh] flex items-center overflow-hidden">
+  <section class="relative bg-primary min-h-[55vh] flex items-center overflow-hidden">
     <img src="/images/hero.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" loading="eager" />
     <div class="absolute inset-0 bg-gradient-to-r from-primary-dark/80 via-primary-dark/40 to-transparent"></div>
     <div class="relative z-10 text-left text-white px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
@@ -68,7 +68,7 @@ import airfield from '../content/airfield.json';
           <iframe
             src="https://widget.holfuy.com/?station=1939&su=km/h&t=C&lang=de&mode=detailed"
             width="100%"
-            height="520"
+            height="350"
             frameborder="0"
             loading="lazy"
             title="Wetterstation EDUO"
@@ -86,28 +86,21 @@ import airfield from '../content/airfield.json';
       <!-- Rundflüge & Gutscheine -->
       <div class="flex flex-col">
         <h2 class="text-2xl sm:text-3xl font-bold text-primary mb-6">Rundflüge &amp; Gutscheine</h2>
-        <div class="bg-white rounded-xl shadow-lg p-8 flex-1 flex flex-col justify-between">
-          <div>
-            <p class="text-text-light leading-relaxed mb-6">
-              Erleben Sie einen unvergesslichen Rundflug über das Mansfelder Land, den Süßen See
-              und die Lutherstadt Eisleben. Unsere erfahrenen Piloten zeigen Ihnen die Region
-              aus einer völlig neuen Perspektive.
-            </p>
-            <ul class="space-y-3 mb-6">
-              <li class="flex items-start gap-3">
-                <span class="text-accent font-bold text-lg mt-0.5">&#10003;</span>
-                <span class="text-text"><strong>20 Min. Rundflug</strong> &ndash; Süßer See &amp; Umgebung</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <span class="text-accent font-bold text-lg mt-0.5">&#10003;</span>
-                <span class="text-text"><strong>45 Min. Rundflug</strong> &ndash; Erweiterter Überblick Mansfelder Land</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <span class="text-accent font-bold text-lg mt-0.5">&#10003;</span>
-                <span class="text-text"><strong>Gutscheine</strong> &ndash; Das perfekte Geschenk für jeden Anlass</span>
-              </li>
-            </ul>
-          </div>
+        <div class="bg-white rounded-xl shadow-lg p-8">
+          <ul class="space-y-4 mb-6">
+            <li class="flex items-start gap-3">
+              <span class="text-accent font-bold text-lg mt-0.5">&#10003;</span>
+              <span class="text-text"><strong>20 Min. Rundflug</strong> &ndash; Süßer See &amp; Umgebung</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-accent font-bold text-lg mt-0.5">&#10003;</span>
+              <span class="text-text"><strong>45 Min. Rundflug</strong> &ndash; Erweiterter Überblick Mansfelder Land</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-accent font-bold text-lg mt-0.5">&#10003;</span>
+              <span class="text-text"><strong>Gutscheine</strong> &ndash; Das perfekte Geschenk für jeden Anlass</span>
+            </li>
+          </ul>
           <div class="flex flex-col sm:flex-row gap-3">
             <a href="/kontakt" class="bg-accent text-primary-dark font-semibold px-6 py-3 rounded-lg hover:bg-accent-light transition-colors text-center">
               Rundflug anfragen
