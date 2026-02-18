@@ -58,26 +58,69 @@ import airfield from '../content/airfield.json';
     </div>
   </section>
 
-  <!-- Wetter Widget -->
+  <!-- Wetter & Rundflüge -->
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-    <h2 class="text-2xl sm:text-3xl font-bold text-primary text-center mb-8">Aktuelles Wetter am Platz</h2>
-    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-      <iframe
-        src="https://widget.holfuy.com/?station=1939&su=km/h&t=C&lang=de&mode=detailed"
-        width="100%"
-        height="520"
-        frameborder="0"
-        loading="lazy"
-        title="Wetterstation EDUO"
-        class="w-full"
-      ></iframe>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Wetter Widget -->
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-primary mb-6">Aktuelles Wetter am Platz</h2>
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <iframe
+            src="https://widget.holfuy.com/?station=1939&su=km/h&t=C&lang=de&mode=detailed"
+            width="100%"
+            height="520"
+            frameborder="0"
+            loading="lazy"
+            title="Wetterstation EDUO"
+            class="w-full"
+          ></iframe>
+        </div>
+        <p class="text-sm text-text-light mt-3">
+          Daten von der Holfuy-Wetterstation auf dem Hauptgebäude &middot;
+          <a href="https://holfuy.com/de/weather/1939" target="_blank" rel="noopener" class="text-primary hover:text-accent transition-colors underline">
+            Ausführliche Wetterdaten
+          </a>
+        </p>
+      </div>
+
+      <!-- Rundflüge & Gutscheine -->
+      <div class="flex flex-col">
+        <h2 class="text-2xl sm:text-3xl font-bold text-primary mb-6">Rundflüge &amp; Gutscheine</h2>
+        <div class="bg-white rounded-xl shadow-lg p-8 flex-1 flex flex-col justify-between">
+          <div>
+            <div class="text-5xl mb-4">&#9992;&#65039;</div>
+            <h3 class="text-xl font-bold text-primary-dark mb-3">Das Mansfelder Land von oben</h3>
+            <p class="text-text-light leading-relaxed mb-6">
+              Erleben Sie einen unvergesslichen Rundflug über das Mansfelder Land, den Süßen See
+              und die Lutherstadt Eisleben. Unsere erfahrenen Piloten zeigen Ihnen die Region
+              aus einer völlig neuen Perspektive.
+            </p>
+            <ul class="space-y-3 mb-8">
+              <li class="flex items-start gap-3">
+                <span class="text-accent font-bold text-lg mt-0.5">&#10003;</span>
+                <span class="text-text"><strong>20 Min. Rundflug</strong> &ndash; Süßer See &amp; Umgebung</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-accent font-bold text-lg mt-0.5">&#10003;</span>
+                <span class="text-text"><strong>45 Min. Rundflug</strong> &ndash; Erweiterter Überblick Mansfelder Land</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-accent font-bold text-lg mt-0.5">&#10003;</span>
+                <span class="text-text"><strong>Gutscheine</strong> &ndash; Das perfekte Geschenk für jeden Anlass</span>
+              </li>
+            </ul>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <a href="/kontakt" class="bg-accent text-primary-dark font-semibold px-6 py-3 rounded-lg hover:bg-accent-light transition-colors text-center">
+              Rundflug anfragen
+            </a>
+            <a href="/gebuehren" class="border-2 border-primary/20 text-primary font-semibold px-6 py-3 rounded-lg hover:bg-primary/5 transition-colors text-center">
+              Preise ansehen
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-    <p class="text-center text-sm text-text-light mt-3">
-      Daten von der Holfuy-Wetterstation auf dem Hauptgebäude &middot;
-      <a href="https://holfuy.com/de/weather/1939" target="_blank" rel="noopener" class="text-primary hover:text-accent transition-colors underline">
-        Ausführliche Wetterdaten
-      </a>
-    </p>
   </section>
 
   <!-- Über uns Teaser -->
